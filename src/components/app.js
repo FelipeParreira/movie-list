@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import MovieList from './movieList.js';
+import SearchBar from './searchBar.js';
 
 var App = (props) => {
 
@@ -19,6 +20,7 @@ var App = (props) => {
   return (
     <div style={divStyle}>
       <h1 style={titleStyle}>Movie List</h1>
+      <SearchBar />
       <MovieList movies={props.movies} />
     </div>
   );
