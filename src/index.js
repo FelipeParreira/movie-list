@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/app.js';
+import movies from './movieData.js';
 
-function component() {
-  let element = document.createElement('div');
+ReactDOM.render(
+  <App movies={movies} />,
+  document.getElementById('app')
+);
 
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-  return element;
-}
-
-document.body.appendChild(component());

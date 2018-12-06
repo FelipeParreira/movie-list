@@ -1,0 +1,23 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import MovieListEntry from './movieListEntry.js';
+
+var MovieList = (props) => {
+
+  const listStyle = {
+    listStyleType: 'none'
+  };
+
+  return (
+    <ul style={listStyle}>
+      {props.movies.map(movie => (<MovieListEntry movie={movie} key={movie.title} />))}
+    </ul>  
+  );
+};
+
+MovieList.propTypes = {
+  movies: PropTypes.array.isRequired
+};
+
+export default MovieList;
