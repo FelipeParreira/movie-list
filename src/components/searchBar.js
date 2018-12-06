@@ -10,13 +10,13 @@ var SearchBar = (props) => {
 
   return (
     <div>
-      <input type="text" /> <button>Go!</button>
+      <input type="text" /> <button onClick={props.searchFunction}>Go!</button>
     </div> 
   );
 };
 
 SearchBar.propTypes = {
-
+  searchFunction: PropTypes.func.isRequired
 };
 
 export default SearchBar;
