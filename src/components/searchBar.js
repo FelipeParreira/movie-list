@@ -4,13 +4,9 @@ import PropTypes from 'prop-types';
 
 var SearchBar = (props) => {
 
-  const listStyle = {
-    listStyleType: 'none'
-  };
-
   return (
     <div>
-      <input type="text" /> <button onClick={props.searchFunction}>Go!</button>
+      <input className="search" type="text" placeholder="Search..." /> <button onClick={props.searchFunction}>Go!</button>
     </div> 
   );
 };
