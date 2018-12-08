@@ -10,12 +10,12 @@ var MovieListEntry = (props) => {
   };
 
   return (
-    <li style={itemStyle}>{props.movie.title}</li>
+    <li style={itemStyle}>{props.movie}</li>
   );
 };
 
 MovieListEntry.propTypes = {
-  movie: PropTypes.object.isRequired
+  movie: PropTypes.string.isRequired
 };
 
 export default MovieListEntry;

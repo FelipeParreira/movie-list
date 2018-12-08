@@ -6,7 +6,7 @@ var AddMovieBar = (props) => {
 
   return (
     <div>
-      <input type="text" placeholder="Add movie title here" /> <button onClick={props.addFunction}>Add</button>
+      <input className="add" type="text" placeholder="Add movie title here" /> <button onClick={props.addFunction}>Add</button>
     </div> 
   );
 };

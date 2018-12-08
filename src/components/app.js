@@ -11,8 +11,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies,
-      warning: 'no movie by that name found'
+      movies: [],
+      displayedMovies: [],
+      warning: 'no movie by that name found',
+      searchClicked: false
     };
   }
 
@@ -23,22 +25,29 @@ class App extends React.Component {
     var filteredMovies = [];
 
     // TODO: make this searching function better
+    var movies = this.state.movies;
     for (var i = 0; i < movies.length; i++) {
-      var movieWords = new Set(movies[i].title.toLowerCase().split(' '));
+      var movieWords = new Set(movies[i].toLowerCase().split(' '));
       var matchingWords = new Set([...searchWords].filter(word => movieWords.has(word)));
       if (matchingWords.size > 0) {
         filteredMovies.push(movies[i]);
       }
     }
-    console.log('filteredMovies: ', filteredMovies);
-    this.setState({
-      movies: filteredMovies
-    });
     
+    this.setState({
+      displayedMovies: filteredMovies,
+      searchClicked: true
+    });   
   }
 
   handleAddButtonClick() {
-
+    var newMovie = $('input.add').val();
+    $('input.add').val('');
+    this.setState({
+      movies: this.state.movies.concat(newMovie),
+      searchClicked: false
+    });
+    window.alert('A new movie ' + '("' + newMovie + '")' + ' was added to the list!');
   }
 
   render() {
@@ -66,15 +75,11 @@ class App extends React.Component {
           <AddMovieBar addFunction={this.handleAddButtonClick.bind(this)} />
           <SearchBar searchFunction={this.handleSearchButtonClick.bind(this)} />
         </div>
-        {this.state.movies.length === 0 ? <h2>{this.state.warning}</h2> : null}
-        <MovieList movies={this.state.movies} />
+        {this.state.searchClicked && this.state.displayedMovies.length === 0 ? <h2>{this.state.warning}</h2> : null}
+        <MovieList movies={this.state.displayedMovies} />
       </div>
     );
   }
 }
-
-// App.propTypes = {
-//   movies: PropTypes.array.isRequired
-// };
 
 export default App;
