@@ -11,7 +11,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: [],
+      movies: {},
       displayedMovies: [],
       warning: 'no movie by that name found',
       searchClicked: false
@@ -19,35 +19,54 @@ class App extends React.Component {
   }
 
   handleSearchButtonClick(event) {
-    console.log('Search function');
-    event.preventDefault();
-    var searchWords = new Set($('input.search').val().toLowerCase().split(' '));
-    var filteredMovies = [];
+    if ($('input.search').val() !== '') {
 
-    // TODO: make this searching function better
-    var movies = this.state.movies;
-    for (var i = 0; i < movies.length; i++) {
-      var movieWords = new Set(movies[i].toLowerCase().split(' '));
-      var matchingWords = new Set([...searchWords].filter(word => movieWords.has(word)));
-      if (matchingWords.size > 0) {
-        filteredMovies.push(movies[i]);
+      event.preventDefault();
+      var searchWords = new Set($('input.search').val().toLowerCase().split(' '));
+      var filteredMovies = [];
+
+      // TODO: make this searching function better
+      var movies = this.state.movies;
+      console.log('movies', movies);
+      for (var movie in movies) {
+        console.log('movie', typeof movie);
+        var movieWords = new Set((movie).toLowerCase().split(' '));
+        var matchingWords = new Set([...searchWords].filter(word => movieWords.has(word)));
+        if (matchingWords.size > 0) {
+          filteredMovies.push(movies[movie]);
+        }
       }
-    }
-    
-    this.setState({
-      displayedMovies: filteredMovies,
-      searchClicked: true
-    });   
+      
+      this.setState({
+        displayedMovies: filteredMovies,
+        searchClicked: true
+      });  
+    } 
   }
 
   handleAddButtonClick() {
-    var newMovie = $('input.add').val();
-    $('input.add').val('');
-    this.setState({
-      movies: this.state.movies.concat(newMovie),
-      searchClicked: false
-    });
-    window.alert('A new movie ' + '("' + newMovie + '")' + ' was added to the list!');
+    var title = $('input.add').val();
+    if (title !== '') {
+      var newMovie = {};
+      newMovie.title = title;
+      $('input.add').val('');
+      if (!this.state.movies[title]) {
+        var movieObject = {};
+        movieObject[title] = newMovie;
+        this.setState({
+          movies: Object.assign(this.state.movies, movieObject),
+          searchClicked: false
+        });
+        window.alert('A new movie ' + '("' + newMovie.title + '")' + ' was added to the list!');        
+      } else {
+        window.alert('This movie ' + '("' + newMovie.title + '")' + ' is already in the list!');        
+      }
+    }
+    console.log(this.state.movies);
+  }
+
+  toggleMovie(movie) {
+    
   }
 
   render() {
@@ -68,12 +87,17 @@ class App extends React.Component {
       width: '12vw'
     };
 
+    console.log('displayed movies', this.state.displayedMovies);
+
     return (
       <div style={divStyle}>
         <h1 style={titleStyle}>Movie List</h1>
         <div style={buttonsDivStyle}>
           <AddMovieBar addFunction={this.handleAddButtonClick.bind(this)} />
           <SearchBar searchFunction={this.handleSearchButtonClick.bind(this)} />
+          <br />
+          <button>Watched</button>
+          <button>To Watch</button>
         </div>
         {this.state.searchClicked && this.state.displayedMovies.length === 0 ? <h2>{this.state.warning}</h2> : null}
         <MovieList movies={this.state.displayedMovies} />

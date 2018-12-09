@@ -9,13 +9,18 @@ var MovieListEntry = (props) => {
     padding: '2em'
   };
 
+  const buttonStyle = {
+    backgroundColor: props.movie.watched ? 'green' : 'white',
+    color: props.movie.watched ? 'white' : 'green'
+  };
+
   return (
-    <li style={itemStyle}>{props.movie}</li>
+    <li style={itemStyle}>{props.movie.title} <button style={buttonStyle} onClick={props.toggleMovie}>Watched</button></li>
   );
 };
 
 MovieListEntry.propTypes = {
-  movie: PropTypes.string.isRequired
+  movie: PropTypes.object.isRequired
 };
 
 export default MovieListEntry;
