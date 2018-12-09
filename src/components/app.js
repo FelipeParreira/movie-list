@@ -6,6 +6,7 @@ import MovieList from './movieList.js';
 import SearchBar from './searchBar.js';
 import AddMovieBar from './addMovieBar.js';
 import $ from 'jquery';
+import _ from 'underscore';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,8 +14,9 @@ class App extends React.Component {
     this.state = {
       movies: {},
       displayedMovies: [],
-      warning: 'no movie by that name found',
-      searchClicked: false
+      searchClicked: false,
+      watched: false,
+      nonWatched: false
     };
   }
 
@@ -39,7 +41,9 @@ class App extends React.Component {
       
       this.setState({
         displayedMovies: filteredMovies,
-        searchClicked: true
+        searchClicked: true,
+        watched: false,
+        nonWatched: false
       });  
     } 
   }
@@ -79,6 +83,18 @@ class App extends React.Component {
     });
   }
 
+  handleWatchedClick(watched) {
+    var filteredMovies = _.filter(this.state.movies, movie => {
+      return watched ? movie.watched : !movie.watched;
+    });
+    this.setState({
+      displayedMovies: filteredMovies,
+      watched,
+      nonWatched: !watched,
+      searchClicked: false 
+    });
+  }
+
   render() {
 
     const titleStyle = {
@@ -97,6 +113,16 @@ class App extends React.Component {
       width: '12vw'
     };
 
+    const watchedButtonStyle = {
+      backgroundColor: this.state.watched ? 'green' : 'white',
+      color: this.state.watched ? 'white' : 'green'
+    };
+
+    const nonWatchedButtonStyle = {
+      backgroundColor: this.state.nonWatched ? 'green' : 'white',
+      color: this.state.nonWatched ? 'white' : 'green'
+    };
+
     console.log('displayed movies', this.state.displayedMovies);
 
     return (
@@ -106,10 +132,20 @@ class App extends React.Component {
           <AddMovieBar addFunction={this.handleAddButtonClick.bind(this)} />
           <SearchBar searchFunction={this.handleSearchButtonClick.bind(this)} />
           <br />
-          <button>Watched</button>
-          <button>To Watch</button>
+          <button style={watchedButtonStyle} onClick={this.handleWatchedClick.bind(this, true)}>Watched</button>
+          <button style={nonWatchedButtonStyle} onClick={this.handleWatchedClick.bind(this, false)}>To Watch</button>
         </div>
-        {this.state.searchClicked && this.state.displayedMovies.length === 0 ? <h2>{this.state.warning}</h2> : null}
+        <h2>
+          {
+            (this.state.searchClicked && this.state.displayedMovies.length === 0) ?
+            "no movie by that name found" :
+            (this.state.watched && this.state.displayedMovies.length === 0) ?
+            "No movies were watched" :
+            (this.state.nonWatched && this.state.displayedMovies.length === 0) ?
+            "No movies to be watched" :
+            null
+          }
+        </h2>
         <MovieList movies={this.state.displayedMovies} toggleMovie={this.toggleMovie.bind(this)} />
       </div>
     );
