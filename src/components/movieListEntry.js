@@ -15,7 +15,12 @@ var MovieListEntry = (props) => {
   };
 
   return (
-    <li style={itemStyle}>{props.movie.title} <button style={buttonStyle} onClick={props.toggleMovie}>Watched</button></li>
+    <li style={itemStyle}>
+      {props.movie.title} 
+      <button style={buttonStyle} onClick={() => props.toggleMovie(props.movie)}>
+        Watched
+      </button>
+    </li>
   );
 };
 

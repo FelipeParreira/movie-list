@@ -47,7 +47,7 @@ class App extends React.Component {
   handleAddButtonClick() {
     var title = $('input.add').val();
     if (title !== '') {
-      var newMovie = {};
+      var newMovie = {watched: false};
       newMovie.title = title;
       $('input.add').val('');
       if (!this.state.movies[title]) {
@@ -66,7 +66,17 @@ class App extends React.Component {
   }
 
   toggleMovie(movie) {
-    
+    var watched = !movie.watched;
+    var movieObject = {};
+    movie.watched = !movie.watched;
+
+    movieObject[movie.title] = {};
+    movieObject[movie.title].title = movie.title;
+    movieObject[movie.title].watched = watched;
+
+    this.setState({
+      movies: Object.assign(this.state.movies, movieObject)
+    });
   }
 
   render() {
@@ -100,7 +110,7 @@ class App extends React.Component {
           <button>To Watch</button>
         </div>
         {this.state.searchClicked && this.state.displayedMovies.length === 0 ? <h2>{this.state.warning}</h2> : null}
-        <MovieList movies={this.state.displayedMovies} />
+        <MovieList movies={this.state.displayedMovies} toggleMovie={this.toggleMovie.bind(this)} />
       </div>
     );
   }
