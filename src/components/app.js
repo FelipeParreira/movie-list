@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import movies from '../movieData.js';
+import extraData from '../movieData.js';
 import MovieList from './movieList.js';
 import SearchBar from './searchBar.js';
 import AddMovieBar from './addMovieBar.js';
@@ -51,12 +51,13 @@ class App extends React.Component {
   handleAddButtonClick() {
     var title = $('input.add').val();
     if (title !== '') {
-      var newMovie = {watched: false};
+      var newMovie = {watched: false, showDetails: false};
       newMovie.title = title;
       $('input.add').val('');
       if (!this.state.movies[title]) {
         var movieObject = {};
         movieObject[title] = newMovie;
+
         this.setState({
           movies: Object.assign(this.state.movies, movieObject),
           searchClicked: false
@@ -77,6 +78,7 @@ class App extends React.Component {
     movieObject[movie.title] = {};
     movieObject[movie.title].title = movie.title;
     movieObject[movie.title].watched = watched;
+    movieObject[movie.title].showDetails = movie.showDetails;
 
     this.setState({
       movies: Object.assign(this.state.movies, movieObject)
@@ -84,14 +86,27 @@ class App extends React.Component {
   }
 
   handleWatchedClick(watched) {
-    var filteredMovies = _.filter(this.state.movies, movie => {
+    console.log('this.state.movies', this.state.movies);
+    var filteredMovies = _.filter({...this.state.movies}, movie => {
       return watched ? movie.watched : !movie.watched;
     });
+
     this.setState({
       displayedMovies: filteredMovies,
       watched,
       nonWatched: !watched,
       searchClicked: false 
+    });
+  }
+
+  handleTitleClick(movie) {
+    var newMovie = Object.assign(this.state.movies[movie.title]);
+    newMovie['showDetails'] = !movie.showDetails;
+    var newMovies = {...this.state.movies};
+    newMovies[movie.title] = newMovie;
+
+    this.setState({
+      movies: newMovies
     });
   }
 
@@ -146,7 +161,7 @@ class App extends React.Component {
             null
           }
         </h2>
-        <MovieList movies={this.state.displayedMovies} toggleMovie={this.toggleMovie.bind(this)} />
+        <MovieList handleTitleClick={this.handleTitleClick.bind(this)} movies={this.state.displayedMovies} toggleMovie={this.toggleMovie.bind(this)} />
       </div>
     );
   }

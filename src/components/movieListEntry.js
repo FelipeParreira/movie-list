@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import MovieDetails from './movieDetails.js';
 
 var MovieListEntry = (props) => {
 
@@ -16,16 +17,18 @@ var MovieListEntry = (props) => {
 
   return (
     <li style={itemStyle}>
-      {props.movie.title} 
+      <span onClick={() => props.handleTitleClick(props.movie)}>{props.movie.title}</span>
       <button style={buttonStyle} onClick={() => props.toggleMovie(props.movie)}>
         Watched
       </button>
+      {props.movie.showDetails ? <MovieDetails /> : null}
     </li>
   );
 };
 
 MovieListEntry.propTypes = {
-  movie: PropTypes.object.isRequired
+  movie: PropTypes.object.isRequired,
+  handleTitleClick: PropTypes.func.isRequired
 };
 
 export default MovieListEntry;
