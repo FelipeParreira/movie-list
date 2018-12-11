@@ -14,6 +14,11 @@ var MovieDetails = (props) => {
     heigth: '10'
   };
 
+  const buttonStyle = {
+    backgroundColor: props.movie.watched ? 'green' : 'white',
+    color: props.movie.watched ? 'white' : 'green'
+  };
+
   return (
     <div className="container">
       <ul>
@@ -22,6 +27,11 @@ var MovieDetails = (props) => {
             <li key={data+key}><span style={spanStyle}>{key}</span>: {data}</li>
           );
         })}
+        <li>
+          <button style={buttonStyle} onClick={() => props.toggleMovie(props.movie)}>
+            Watched
+          </button>
+        </li>
       </ul>
       <img style={imgStyle} src="" />
     </div>

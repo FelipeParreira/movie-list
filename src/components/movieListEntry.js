@@ -10,18 +10,10 @@ var MovieListEntry = (props) => {
     padding: '2em'
   };
 
-  const buttonStyle = {
-    backgroundColor: props.movie.watched ? 'green' : 'white',
-    color: props.movie.watched ? 'white' : 'green'
-  };
-
   return (
     <li style={itemStyle}>
-      <span onClick={() => props.handleTitleClick(props.movie)}>{props.movie.title}</span>
-      <button style={buttonStyle} onClick={() => props.toggleMovie(props.movie)}>
-        Watched
-      </button>
-      {props.movie.showDetails ? <MovieDetails /> : null}
+      <button onClick={() => props.handleTitleClick(props.movie)}>{props.movie.title}</button>
+      {props.movie.showDetails ? <MovieDetails movie={props.movie} toggleMovie={props.toggleMovie} /> : null}
     </li>
   );
 };
