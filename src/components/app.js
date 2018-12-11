@@ -100,8 +100,10 @@ class App extends React.Component {
   }
 
   handleTitleClick(movie) {
+    console.log('handle title click');
     var newMovie = Object.assign(this.state.movies[movie.title]);
     newMovie['showDetails'] = !movie.showDetails;
+    // movie.showDetails = !movie.showDetails;
     var newMovies = {...this.state.movies};
     newMovies[movie.title] = newMovie;
 
