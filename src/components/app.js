@@ -54,7 +54,7 @@ class App extends React.Component {
     $('input.add').val('');
 
     if (title !== '') {
-      var newMovie = {watched: false, showDetails: false, details: extraData};
+      var newMovie = {watched: false, showDetails: false};
       $.ajax({    
         url: `https://api.themoviedb.org/3/search/movie?api_key=${API_key}&language=en-US&query=${title}&page=1&include_adult=false`,
         type: 'GET',
@@ -65,32 +65,20 @@ class App extends React.Component {
             var movieObject = {};
             movieObject[title] = newMovie;
             newMovie.title = title;
+            newMovie.details = data.results[0];
             this.setState({
               movies: Object.assign(this.state.movies, movieObject),
               searchClicked: false
             });
             
-            window.alert('A new movie ' + '("' + newMovie.title + '")' + ' was added to the list!');        
-            // newMovie.details = data;
+            window.alert('A new movie ' + '("' + title + '")' + ' was added to the list!');        
           } else {
             window.alert('This movie ' + '("' + title + '")' + ' is already in the list!');        
           }
         },
         error: console.log
       });
-
-
-      // if (!this.state.movies[title]) {
-      //   var movieObject = {};
-      //   movieObject[title] = newMovie;
-      //   // make API call to fill in movie details
-        
-
-      // } else {
-      //   window.alert('This movie ' + '("' + newMovie.title + '")' + ' is already in the list!');        
-      // }
     }
-
 
     console.log(this.state.movies);
   }
