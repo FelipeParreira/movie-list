@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 import extraData from '../movieData.js';
 import _ from 'underscore';
 
@@ -19,10 +20,13 @@ var MovieDetails = (props) => {
     color: props.movie.watched ? 'white' : 'green'
   };
 
+  console.log('inside movie details');
+  // $.ajax();
+
   return (
     <div className="container">
       <ul>
-        {_.map(extraData, (data, key) => {
+        {_.map(props.movie.details, (data, key) => {
           return (
             <li key={data+key}><span style={spanStyle}>{key}</span>: {data}</li>
           );

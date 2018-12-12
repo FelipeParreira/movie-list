@@ -5,6 +5,7 @@ import extraData from '../movieData.js';
 import MovieList from './movieList.js';
 import SearchBar from './searchBar.js';
 import AddMovieBar from './addMovieBar.js';
+import API_key from '../../config/API_key';
 import $ from 'jquery';
 import _ from 'underscore';
 
@@ -50,23 +51,47 @@ class App extends React.Component {
 
   handleAddButtonClick() {
     var title = $('input.add').val();
-    if (title !== '') {
-      var newMovie = {watched: false, showDetails: false};
-      newMovie.title = title;
-      $('input.add').val('');
-      if (!this.state.movies[title]) {
-        var movieObject = {};
-        movieObject[title] = newMovie;
+    $('input.add').val('');
 
-        this.setState({
-          movies: Object.assign(this.state.movies, movieObject),
-          searchClicked: false
-        });
-        window.alert('A new movie ' + '("' + newMovie.title + '")' + ' was added to the list!');        
-      } else {
-        window.alert('This movie ' + '("' + newMovie.title + '")' + ' is already in the list!');        
-      }
+    if (title !== '') {
+      var newMovie = {watched: false, showDetails: false, details: extraData};
+      $.ajax({    
+        url: `https://api.themoviedb.org/3/search/movie?api_key=${API_key}&language=en-US&query=${title}&page=1&include_adult=false`,
+        type: 'GET',
+        success: (data) => {
+          console.log('DATA from API:', data);
+          var title  = data.results[0].original_title;
+          if (!this.state.movies[title]) {
+            var movieObject = {};
+            movieObject[title] = newMovie;
+            newMovie.title = title;
+            this.setState({
+              movies: Object.assign(this.state.movies, movieObject),
+              searchClicked: false
+            });
+            
+            window.alert('A new movie ' + '("' + newMovie.title + '")' + ' was added to the list!');        
+            // newMovie.details = data;
+          } else {
+            window.alert('This movie ' + '("' + title + '")' + ' is already in the list!');        
+          }
+        },
+        error: console.log
+      });
+
+
+      // if (!this.state.movies[title]) {
+      //   var movieObject = {};
+      //   movieObject[title] = newMovie;
+      //   // make API call to fill in movie details
+        
+
+      // } else {
+      //   window.alert('This movie ' + '("' + newMovie.title + '")' + ' is already in the list!');        
+      // }
     }
+
+
     console.log(this.state.movies);
   }
 
