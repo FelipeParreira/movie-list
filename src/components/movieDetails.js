@@ -11,8 +11,8 @@ var MovieDetails = (props) => {
   };
 
   const imgStyle = {
-    width: '10',
-    heigth: '10'
+    width: 'auto',
+    heigth: '50'
   };
 
   const buttonStyle = {
@@ -20,15 +20,19 @@ var MovieDetails = (props) => {
     color: props.movie.watched ? 'white' : 'green'
   };
 
+  const containerStyle = {
+    // width: 'auto'
+  };
+
   console.log('inside movie details');
   // $.ajax();
 
   return (
-    <div className="container">
+    <div className="container" style={containerStyle}>
       <ul>
         {_.map(props.movie.details, (data, key) => {
           return (
-            <li key={data+key}><span style={spanStyle}>{key}</span>: {data}</li>
+            <li key={data + key}><span style={spanStyle}>{key}</span>: {data}</li>
           );
         })}
         <li>
@@ -37,7 +41,7 @@ var MovieDetails = (props) => {
           </button>
         </li>
       </ul>
-      <img style={imgStyle} src="" />
+      <img style={imgStyle} src={`https://image.tmdb.org/t/p/w200/${props.movie.details.poster_path}`} />
     </div>
   );  
 };

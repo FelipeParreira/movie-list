@@ -135,7 +135,8 @@ class App extends React.Component {
     const divStyle = {
       border: '1px solid gray',
       padding: '1em',
-      width: '30vw'
+      width: '50vw',
+      margin: '0 auto'
     };
 
     const buttonsDivStyle = {
