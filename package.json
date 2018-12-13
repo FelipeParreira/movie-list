@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --watch --info-verbosity verbose",
     "build:prod": "webpack src/index.js dist/main.js -p",
-    "compile": "babel . --out-dir compiled --presets=react --ignore=node_modules,compiled --source-maps inline"
+    "compile": "babel . --out-dir compiled --presets=react --ignore=node_modules,compiled --source-maps inline",
+    "server": "nodemon server.js"
   },
   "keywords": [],
   "author": "Felipe Parreira",
@@ -35,7 +36,9 @@
     "babel-plugin-react": "1.0.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.5.0",
+    "body-parser": "^1.18.3",
     "bootstrap": "^4.1.3",
+    "express": "^4.16.4",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
