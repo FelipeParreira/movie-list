@@ -20,15 +20,8 @@ var MovieDetails = (props) => {
     color: props.movie.watched ? 'white' : 'green'
   };
 
-  const containerStyle = {
-    // width: 'auto'
-  };
-
-  console.log('inside movie details');
-  // $.ajax();
-
   return (
-    <div className="container" style={containerStyle}>
+    <div className="container">
       <ul>
         {_.map(props.movie.details, (data, key) => {
           return (

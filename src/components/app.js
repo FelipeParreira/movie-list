@@ -92,6 +92,7 @@ class App extends React.Component {
     movieObject[movie.title].title = movie.title;
     movieObject[movie.title].watched = watched;
     movieObject[movie.title].showDetails = movie.showDetails;
+    movieObject[movie.title].details = movie.details;
 
     this.setState({
       movies: Object.assign(this.state.movies, movieObject)
