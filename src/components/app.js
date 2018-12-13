@@ -5,7 +5,7 @@ import extraData from '../movieData.js';
 import MovieList from './movieList.js';
 import SearchBar from './searchBar.js';
 import AddMovieBar from './addMovieBar.js';
-import API_key from '../../config/API_key';
+import API_key from '../../config/API_key.js';
 import $ from 'jquery';
 import _ from 'underscore';
 
@@ -54,10 +54,13 @@ class App extends React.Component {
     $('input.add').val('');
 
     if (title !== '') {
+
       var newMovie = {watched: false, showDetails: false};
-      $.ajax({    
-        url: `https://api.themoviedb.org/3/search/movie?api_key=${API_key}&language=en-US&query=${title}&page=1&include_adult=false`,
-        type: 'GET',
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:3000/api/movies',
+        data: {title: title},
         success: (data) => {
           console.log('DATA from API:', data);
           var title  = data.results[0].original_title;

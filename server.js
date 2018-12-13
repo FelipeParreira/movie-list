@@ -1,27 +1,48 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+// const request = require('ajax-request');
+const https = require('https');
 const app = express();
 const port = process.env.PORT || 3000;
+const $ = require('jquery');
+// const API_key = require('./config/API_key');
+const API_key = '31cc7e28cc7b977ca09f20a5af2cfb14';
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.static('dist'));
+app.use(express.static('dist'));
 
-app.get('/api/movies', (req, res) => {
-  var movies = [
-    {title: 'Mean Girls', Year: 1889, Runtime: '107 min', Metascore: 46, imdbRating: 6.2, watched: false},
-    {title: 'Hackers', Year: 1999, Runtime: '106 min', Metascore: 49, imdbRating: 6.1, watched: true},
-    {title: 'The Grey', Year: 2000, Runtime: '105 min', Metascore: 42, imdbRating: 5.0, watched: true},
-    {title: 'Sunshine', Year: 2010, Runtime: '97 min', Metascore: 47, imdbRating: 6.4, watched: false},
-    {title: 'Ex Machina', Year: 1988, Runtime: '87 min', Metascore: 50, imdbRating: 7.9, watched: true},
-  ];
-  res.send(movies);
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
-// app.post('', (req, res) => {
-  
+app.post('/api/movies', (req, res) => {
+  console.log('Request body!!!', req.body);
+  var title = req.body.title;
+  var response = res;
+
+  https.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_key}&language=en-US&query=${title}&page=1&include_adult=false`, (resp) => {
+  let data = '';
+
+  // A chunk of data has been recieved.
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    console.log(JSON.parse(data));
+    response.send(JSON.parse(data));
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+});
+
+});
+
+// app.all('*', (req, res) => {
+//   res.send('Hello world!');
 // });
-
-app.all('*', (req, res) => {
-  res.send('Hello world!');
-});
