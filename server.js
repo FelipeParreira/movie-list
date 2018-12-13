@@ -10,7 +10,8 @@ const API_key = '31cc7e28cc7b977ca09f20a5af2cfb14';
 
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('dist'));
+app.use(express.static(__dirname + '/dist/'));
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
